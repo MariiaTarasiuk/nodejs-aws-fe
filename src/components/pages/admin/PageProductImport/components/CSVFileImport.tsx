@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import axios from "axios";
+import { TheatersRounded } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -41,8 +42,10 @@ export default function CSVFileImport({ url, title }: CSVFileImportProps) {
       params: {
         name: encodeURIComponent(file.name),
       },
-      headers: { Authorization: `Basic ${token}` },
-    });
+      headers: userName && password ? { Authorization: `Basic ${token}` } : {},
+    })
+      .then((data: any) => data)
+      .catch((error) => alert(`ERROR during upload file: ${error.status} ${error.data.message}`));
     console.log("File to upload: ", file.name);
     console.log("Uploading to: ", response.data);
     const result = await fetch(response.data, {
